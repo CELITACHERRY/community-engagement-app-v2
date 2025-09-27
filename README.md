@@ -39,3 +39,9 @@ Now I’m applying those skills to **build this app step by step in code**, docu
 ---
 
 ## 📂 Repo Structure
+community-engagement-app-v2/
+┣ docs/ → learning notes, PRDs
+┣ src/ → code (HTML, CSS, JS)
+┣ api-tests/ → Postman collections, JSON
+┣ README.md → this document
+┗ roadmap.md → learning + build plan
