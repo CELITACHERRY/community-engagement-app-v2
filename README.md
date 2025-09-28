@@ -56,3 +56,25 @@ community-engagement-app-v2/
 ├── README.md # You're reading it now!
 ├── roadmap.md # Project phases and milestones
 └── assets/ # (Optional) Folder for images/icons
+
+---
+
+## 📌 How to Contribute
+
+This is an open community project. If you’re a parent, developer, advocate, or ally who wants to help us build, improve, or share this project — reach out or fork the repo and start contributing!
+
+---
+
+## 🙌 Built With Love By
+
+**Celita C.** – Executive Director of M.A.S.K., Community Advocate, Product Strategist, and Mama on a Mission 💪🏾
+
+> *"We aren't waiting for the system to fix itself — we're building what our communities need."*
+
+---
+
+## 🔗 Useful Links
+
+- [MASK Website (Coming Soon)](https://maskadvocacy.org)
+- [Google Sheet Source (Board Meetings & Events)](https://docs.google.com/spreadsheets/d/144ZkvCv6WCZbfy1E8YCDb4dqVgR54lKwfHlD40X2HCI/edit)
+- [Celita’s GitHub Profile](https://github.com/CELITACHERRY)
