@@ -1,8 +1,25 @@
-* { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, Arial, sans-serif; }
-.container { max-width: 900px; margin: 40px auto; padding: 0 16px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 16px; }
-.card { border: 1px solid #eee; border-radius: 12px; padding: 16px; }
-.card h3 { margin: 0 0 8px; font-size: 1.1rem; }
-.card p { margin: 0; color: #444; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  margin: 0;
+  padding: 1rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 2rem;
+}
+
+h1 {
+  color: #2E0543;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
 
