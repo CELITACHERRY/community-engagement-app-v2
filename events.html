@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MASK Events</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <img src="./assets/mask-logo.png" alt="MASK Logo" class="logo" />
+      <h1>📅 Upcoming Events</h1>
+    </header>
+
+    <main class="container">
+      <p id="status">Loading events from Google Sheets…</p>
+      <div id="events" class="grid"></div>
+    </main>
+
+    <footer>
+      <p><a href="index.html">⬅️ Back to Home</a></p>
+    </footer>
+
+    <!-- DO NOT put <script> tags inside other <script> tags -->
+
+    <!-- ✅ Your external JS file (app.js) will contain all the fetch logic -->
+    <script src="./app.js"></script>
+  </body>
+</html>

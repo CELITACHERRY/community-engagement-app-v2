@@ -1,17 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Community Engagement App – Phase 2</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <main class="container">
-    <h1>Community Engagement App – Phase 2</h1>
-    <p id="status">Parent Events Feed coming soon…</p>
-    <div id="events" class="grid"></div>
-  </main>
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M.A.S.K. Community Engagement</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <img src="./assets/mask-logo.png" alt="MASK Logo" class="logo" />
+      <h1>Welcome to M.A.S.K.</h1>
+      <p>Mothers Advocating for School Kids</p>
+    </header>
+
+    <main class="container">
+      <!-- Mission Statement -->
+      <section>
+        <h2>📣 Our Mission</h2>
+        <p>
+          M.A.S.K. is a parent-led education advocacy group committed to
+          empowering families, strengthening voices, and creating lasting change
+          in our schools and communities. We believe that every child deserves
+          access to quality education, supportive resources, and a system that
+          values parent engagement and transparency.
+        </p>
+      </section>
+
+      <!-- Navigation Links -->
+      <section>
+        <h2>🔗 Explore Our Site</h2>
+        <ul>
+          <li><a href="events.html">📅 Upcoming Events</a></li>
+          <li><a href="board-meetings.html">📝 Board Meetings</a></li>
+          <li><a href="resources.html">📚 Parent Resources</a></li>
+        </ul>
+      </section>
+
+      <!-- Newsletter Signup -->
+      <section>
+        <h2>📬 Stay Connected</h2>
+        <p>
+          Join our newsletter, <strong>The M.A.S.K. Debrief</strong>, for
+          updates, resources, and ways to get involved.
+        </p>
+        <form
+          action="https://maskadvocacy.substack.com/subscribe"
+          method="get"
+          target="_blank"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 M.A.S.K. Advocacy | Built by Coach Cee</p>
+    </footer>
+  </body>
 </html>
