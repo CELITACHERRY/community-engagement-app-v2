@@ -1,17 +1,16 @@
 // === CONFIG ===
 const spreadsheetId = "144ZkvCv6WCZbfy1E8YCDb4dqVgR54lKwfHlD40X2HCI";
-const sheetName = "Events_AI"; // <-- using your AI-normalized tab
-const apiKey = "AIzaSyBs5PFdztKFby_lYP34g5rGg0ROoXChqRg"; // Restrict this key in Google Cloud!
+const sheetName = "Events_AI"; // AI-normalized tab
+const apiKey = "AIzaSyBs5PFdztKFby_lYP34g5rGg0ROoXChqRg"; // Restrict to Sheets API + your domain
 
-// We'll fetch headers + data together
 const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(
   sheetName
 )}!A1:ZZ?key=${apiKey}`;
 
 fetch(url)
-  .then((response) => {
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    return response.json();
+  .then((res) => {
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return res.json();
   })
   .then((data) => {
     const rows = data.values || [];
@@ -20,67 +19,79 @@ fetch(url)
       return;
     }
 
+    // Map rows to objects by header
     const headers = rows[0].map((h) => (h || "").trim().toLowerCase());
     const items = rows.slice(1).map((r) => rowToObj(headers, r));
 
-    // filter out truly empty rows (no title, no start)
-    const events = items.filter((ev) => ev.title || ev.start_iso);
+    // Keep events that have a start date and are today or later
+    const now = new Date();
+    const startOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+    const upcoming = items
+      .filter((ev) => ev.start_iso) // must have a start
+      .filter((ev) => new Date(ev.start_iso) >= startOfToday)
+      .sort((a, b) => new Date(a.start_iso) - new Date(b.start_iso));
 
     document.getElementById(
       "status"
-    ).textContent = `Loaded ${events.length} events`;
+    ).textContent = `Loaded ${upcoming.length} upcoming event(s)`;
 
     const container = document.getElementById("events");
-    container.innerHTML = ""; // clear existing
+    container.innerHTML = "";
 
-    events.forEach((ev) => {
-      const {
-        title = "",
-        description = "",
-        start_iso = "",
-        end_iso = "",
-        venue_name = "",
-        address = "",
-        city = "",
-        state = "",
-        is_virtual = "",
-        join_url = "",
-      } = ev;
-
-      const when = formatWhen(start_iso, end_iso);
-      const where = buildLocation({
-        venue_name,
-        address,
-        city,
-        state,
-        is_virtual,
-        join_url,
-      });
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${escapeHtml(title)}</h3>
-        ${when ? `<p><strong>When:</strong> ${when}</p>` : ""}
-        ${where ? `<p><strong>Where:</strong> ${where}</p>` : ""}
-        ${description ? `<p>${escapeHtml(description)}</p>` : ""}
-        ${
-          join_url
-            ? `<p><a href="${encodeURI(
-                join_url
-              )}" target="_blank" rel="noopener">Join / More Info</a></p>`
-            : ""
-        }
-      `;
-      container.appendChild(card);
-    });
+    upcoming.forEach(renderCard);
   })
   .catch((err) => {
     console.error("Error fetching sheet data", err);
     document.getElementById("status").textContent = "Failed to load events.";
   });
 
-// === Helpers ===
+// === Render helpers ===
+function renderCard(ev) {
+  const {
+    title = "",
+    description = "",
+    start_iso = "",
+    end_iso = "",
+    venue_name = "",
+    address = "",
+    city = "",
+    state = "",
+    is_virtual = "",
+    join_url = "",
+  } = ev;
+
+  const when = formatWhen(start_iso, end_iso);
+  const where = buildLocation({
+    venue_name,
+    address,
+    city,
+    state,
+    is_virtual,
+    join_url,
+  });
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <h3>${escapeHtml(title)}</h3>
+    ${when ? `<p><strong>When:</strong> ${when}</p>` : ""}
+    ${where ? `<p><strong>Where:</strong> ${where}</p>` : ""}
+    ${description ? `<p>${escapeHtml(description)}</p>` : ""}
+    ${
+      join_url
+        ? `<p><a href="${encodeURI(
+            join_url
+          )}" target="_blank" rel="noopener">Join / More Info</a></p>`
+        : ""
+    }
+  `;
+  document.getElementById("events").appendChild(card);
+}
+
 function rowToObj(headers, row) {
   const obj = {};
   headers.forEach((h, i) => {
@@ -105,18 +116,19 @@ function formatWhen(startIso, endIso) {
       hour: "numeric",
       minute: "2-digit",
     });
-    let result = `${dateStr} @ ${timeStr}`;
+
+    let out = `${dateStr} @ ${timeStr}`;
     if (end) {
       const sameDay = start.toDateString() === end.toDateString();
       const endTime = end.toLocaleTimeString(undefined, {
         hour: "numeric",
         minute: "2-digit",
       });
-      result += sameDay ? ` – ${endTime}` : ` → ${end.toLocaleString()}`;
+      out += sameDay ? ` – ${endTime}` : ` → ${end.toLocaleString()}`;
     }
-    return result;
+    return out;
   } catch {
-    return startIso; // fallback
+    return startIso;
   }
 }
 
@@ -132,9 +144,8 @@ function buildLocation({
   if (
     is_virtual &&
     (is_virtual.toString().toLowerCase() === "true" || join_url)
-  ) {
+  )
     parts.push("Virtual");
-  }
   if (venue_name) parts.push(venue_name);
   const addrBits = [address, city, state].filter(Boolean).join(", ");
   if (addrBits) parts.push(addrBits);
